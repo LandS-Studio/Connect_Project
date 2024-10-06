@@ -1,0 +1,19 @@
+Begin Object Class=/Script/Engine.Font Name="OpenSans" ExportPath="/Script/Engine.Font'/Game/NoChoice/UI/Fonts/OpenSans.OpenSans'"
+   Begin Object Class=/Script/Engine.FontFace Name="OpenSans_0_Bold" ExportPath="/Script/Engine.FontFace'/Game/NoChoice/UI/Fonts/OpenSans.OpenSans:OpenSans_0_Bold'"
+   End Object
+   Begin Object Class=/Script/Engine.FontFace Name="OpenSans_0_Light" ExportPath="/Script/Engine.FontFace'/Game/NoChoice/UI/Fonts/OpenSans.OpenSans:OpenSans_0_Light'"
+   End Object
+   Begin Object Class=/Script/Engine.FontFace Name="OpenSans_0_Regular" ExportPath="/Script/Engine.FontFace'/Game/NoChoice/UI/Fonts/OpenSans.OpenSans:OpenSans_0_Regular'"
+   End Object
+   Begin Object Name="OpenSans_0_Bold" ExportPath="/Script/Engine.FontFace'/Game/NoChoice/UI/Fonts/OpenSans.OpenSans:OpenSans_0_Bold'"
+      SourceFilename="C:/Users/wsmith/Documents/Unreal Projects/ShooterStarterKit/Content/ShooterStarterKit/UI/Fonts/OpenSans-Bold.ttf"
+   End Object
+   Begin Object Name="OpenSans_0_Light" ExportPath="/Script/Engine.FontFace'/Game/NoChoice/UI/Fonts/OpenSans.OpenSans:OpenSans_0_Light'"
+      SourceFilename="C:/Users/wsmith/Documents/Unreal Projects/ShooterStarterKit/Content/ShooterStarterKit/UI/Fonts/OpenSans-Light.ttf"
+   End Object
+   Begin Object Name="OpenSans_0_Regular" ExportPath="/Script/Engine.FontFace'/Game/NoChoice/UI/Fonts/OpenSans.OpenSans:OpenSans_0_Regular'"
+      SourceFilename="C:/Users/wsmith/Documents/Unreal Projects/ShooterStarterKit/Content/ShooterStarterKit/UI/Fonts/OpenSans-Regular.ttf"
+   End Object
+   FontCacheType=Runtime
+   CompositeFont=(DefaultTypeface=(Fonts=((Name="Regular",Font=(FontFilename="C:/Users/wsmith/Documents/Unreal Projects/ShooterStarterKit/Content/ShooterStarterKit/UI/Fonts/OpenSans-Regular.ttf",FontFaceAsset="/Script/Engine.FontFace'OpenSans_0_Regular'")),(Name="Light",Font=(FontFilename="C:/Users/wsmith/Documents/Unreal Projects/ShooterStarterKit/Content/ShooterStarterKit/UI/Fonts/OpenSans-Light.ttf",FontFaceAsset="/Script/Engine.FontFace'OpenSans_0_Light'")),(Name="Bold",Font=(FontFilename="C:/Users/wsmith/Documents/Unreal Projects/ShooterStarterKit/Content/ShooterStarterKit/UI/Fonts/OpenSans-Bold.ttf",FontFaceAsset="/Script/Engine.FontFace'OpenSans_0_Bold'")))))
+End Object

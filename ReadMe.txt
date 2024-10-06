@@ -1,1 +1,68 @@
-UPDATE LIST
+Update 0.0.24
+
+ADD:
+GameplayEffects:
+    Створено GE_Damage – ефект пошкодження
+    - Ефект миттєвий
+    - Ефект віднімає спочатку броню потім здоров’я.  
+    - Величина пошкодження передається від актора який викликає цей ефект через Assing Tag Set by Caller Magnitude.
+    * не використовував SetByCaller бо хочу передавати різні величини пошкодження.
+
+    Створено GE_Invinsibility - ефект невразливості
+    - Ефект ефект триває 5 секундs
+    - Ефект надає гравцю тег State.Invinsible
+    - Модифіковано ефект GE_Damage (пункт.1), щоб він не працював, коли в героя є тег State.Invinsible
+    - Stacking Type: Aggregate by Target
+    
+    Створено GE_SpeedUp - ефект пришвидшення 
+    - Ефект триває 5 секунд
+    - Під час застосування ефект збільшує швидкість гравця ("вдвічі" я не використовував, зробив по своєму)
+    * бере значення швидкості з предмета який він піднімає 
+    - Після активації змінюється значення атрибуту Speed в MovementAttributeSet
+    - Додано метод void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) 
+      в якому змінено значення MaxWalkSpeed
+    
+Actors:
+    Створено актора BP_BaseDamageZone - небезпечна зона:
+    - В актора є колайдер, який на OnBeginOverlap викликає простеньку візуалізацію та накладає на гравця GE_Damage
+    
+    Створено BP_ItemInvinsibility - предмет, що дає невразливість: 
+    - Викликає GE_Invinsibility на час який задається в налаштуваннях 
+    - Активує іконку в віджеті WBP_PlayerInfo та знищується
+    
+    Створено BP_ItemSpeedUp - предмет, що дає пришвидшення: 
+    - Викликає GE_SpeedUp на час який задається в налаштуваннях 
+    - Активує іконку в віджеті WBP_PlayerInfo та знищується
+    
+Widgets:
+    Створено віджет WBP_PlayerInfo - панель над персонажом:
+    - Реагує на зміни атрибутів Health (зелена полоса) та Armor (синя полоса)   
+    
+    Створено віджет WBP_PlayerStatus - відображення ефектів які накладені на персонажа:
+    - Після піднімання предмета, активується іконка з таймером до закінчення ефекту
+    
+    Створено віджет WBP_Prompt - відображення завершення гри:
+    - Викликається по закінченню часу, дві кнопки "Restart" та "Quit"
+    - Викликається по закінченню здоров'я у персонажа, дві кнопки "Restart" та "Quit"
+    - Викликається після успішного проходження рівня, дві кнопки "Continue" та "Quit"
+    
+    Створено віджет WBP_Countdown - відображення час до закінчення гри:
+    - По завершення викликає віджет WBP_Prompt з відповідним написом
+    
+Attributes
+    До атрибут сету AS_VitalAttributeSet додано метод PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) 
+    в якому обмежено значення Health від 0 до MaxHealth та Armor від 0 до MaxArmor
+    
+    До атрибут сету AS_VitalAttributeSet додано метод PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+    в якому при значенні Health == 0 персонажу надається тег Status.Dead та викликається диспетчер, який відкриває віджет WBP_Prompt з відповідним написом 
+
+Update 0.0.23
+
+Додано:
+- AS_CollectiblesAttributeSet з атрибутом Coins
+- AS_DamageAttributeSet з атрибутом Damage
+- AS_MovementAttributeSet з атрибутом Speed
+- AS_VitalAttributeSet з атрибутом Health
+
+- Зміна значення атрибута на клавішу "1" -10
+- Реакція UI на зміну Health

@@ -11,6 +11,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "TPPlayerState.h"
+#include "Kismet/KismetMathLibrary.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -29,7 +30,7 @@ ATPProjectCharacter::ATPProjectCharacter()
 
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f); // ...at this rotation rate
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 360.0f, 0.0f); // ...at this rotation rate
 
 	// Note: For faster iteration times these variables, and many more, can be tweaked in the Character Blueprint
 	// instead of recompiling to adjust them
@@ -39,6 +40,13 @@ ATPProjectCharacter::ATPProjectCharacter()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
+
+	PlayerCursor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerCursor"));
+	PlayerCursor->SetupAttachment(RootComponent);
+	PlayerCursor->SetRelativeLocation(FVector(0.0f, 0.0f, -85.0f));
+
+	PlayerInfo = CreateDefaultSubobject<UWidgetComponent>(TEXT("PlayerInfo"));
+	PlayerInfo->SetupAttachment(RootComponent);
 
 	/*
 	// Create a camera boom (pulls in towards the player if there is a collision)
@@ -62,6 +70,34 @@ void ATPProjectCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+}
+
+void ATPProjectCharacter::RotateCharacterToPoint(const FVector& HitLocation)
+{
+	if(APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		FVector CharacterLocation = GetActorLocation();
+		FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(CharacterLocation, HitLocation);
+		FRotator CurrentRotation = GetActorRotation();
+
+		FRotator NewRotation = FMath::RInterpTo(CurrentRotation,LookAtRotation,GetWorld()->GetTimeSeconds(),10.f);
+		
+		SetActorRotation(FRotator(0.0f, NewRotation.Yaw , 0.0f));
+	}
+}
+
+float ATPProjectCharacter::GetActiveEffectDuration(FActiveGameplayEffectHandle EffectHandle)
+{
+	
+	if(GetAbilitySystemComponent())
+	{
+		if (const FActiveGameplayEffect* ActiveEffect = GetAbilitySystemComponent()->GetActiveGameplayEffect(EffectHandle))
+		{
+			return ActiveEffect->GetDuration();
+		}
+	}
+	
+	return 0.0f;
 }
 
 UAbilitySystemComponent* ATPProjectCharacter::GetAbilitySystemComponent() const
@@ -117,7 +153,7 @@ void ATPProjectCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATPProjectCharacter::Move);
 
 		// Looking
-		//EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATPProjectCharacter::Look);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATPProjectCharacter::Look);
 	}
 	else
 	{
@@ -151,17 +187,21 @@ void ATPProjectCharacter::Move(const FInputActionValue& Value)
 	}
 }
 
-/*
+
 void ATPProjectCharacter::Look(const FInputActionValue& Value)
 {
-	// input is a Vector2D
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
-
-	if (Controller != nullptr)
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	FHitResult HitResult;
+	
+	if (PlayerController != nullptr)
 	{
-		// add yaw and pitch input to controller
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
+		if(PlayerController->GetHitResultUnderCursor(ECC_Visibility, true, HitResult))
+		{
+			FVector HitLocation = HitResult.Location;
+			HitLocation.Z += 10;
+			RotateCharacterToPoint(HitLocation);
+		}
 	}
 }
-*/
+
+

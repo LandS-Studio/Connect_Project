@@ -6,10 +6,10 @@
 
 ATPProjectGameMode::ATPProjectGameMode()
 {
-	// set default pawn class to our Blueprinted character
+	/*// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/Core/Player/Blueprint/BP_BasicCharacter"));
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
-	}
+	}*/
 }

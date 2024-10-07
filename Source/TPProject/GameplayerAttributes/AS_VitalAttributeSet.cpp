@@ -37,7 +37,7 @@ void UAS_VitalAttributeSet::PostAttributeChange(const FGameplayAttribute& Attrib
 			if(TargetASC)
 			{
 				TargetASC->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName("Status.Dead")));
-				OwnerCharacter->OnPlayerDeath.Broadcast();
+				OwnerCharacter->OnSetPlayerDeath(true);
 			}
 		}
 	}

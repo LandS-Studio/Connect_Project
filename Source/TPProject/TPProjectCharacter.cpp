@@ -86,6 +86,25 @@ void ATPProjectCharacter::RotateCharacterToPoint(const FVector& HitLocation)
 	}
 }
 
+bool ATPProjectCharacter::GetIsAlive()
+{
+	if(GetAbilitySystemComponent())
+	{
+		FGameplayTagContainer OwnedTags;
+
+		GetAbilitySystemComponent()->GetOwnedGameplayTags(OwnedTags);
+
+		if(OwnedTags.HasTag(FGameplayTag::RequestGameplayTag(FName("Status.Dead"))))
+		{
+			return false;
+		}
+		
+		return true;
+		
+	}
+	return true;
+}
+
 float ATPProjectCharacter::GetActiveEffectDuration(FActiveGameplayEffectHandle EffectHandle)
 {
 	

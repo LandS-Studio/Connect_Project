@@ -16,6 +16,6 @@ class TPPROJECT_API UAS_DamageAttributeSet : public UTPAttributeSet
 
 public:
 	UPROPERTY(BlueprintReadOnly)
-	FGameplayAttributeData Damage;
-	ATTRIBUTE_ACCESSORS(UAS_DamageAttributeSet, Damage);
+	FGameplayAttributeData CurrentDamage;
+	ATTRIBUTE_ACCESSORS(UAS_DamageAttributeSet, CurrentDamage);
 };

@@ -19,8 +19,6 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerIsDeath);
-
 UCLASS(config=Game)
 class ATPProjectCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -53,6 +51,7 @@ class ATPProjectCharacter : public ACharacter, public IAbilitySystemInterface
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+
 public:
 	ATPProjectCharacter();
 
@@ -62,11 +61,14 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Status")
 	void OnStatusChanged(bool bActivation, FGameplayTag StatusTag);
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Status")
+	void OnSetPlayerDeath(bool bIsDead);
+
+	UFUNCTION(BlueprintCallable, Category = "Status")
+	bool GetIsAlive();
+
 	UFUNCTION(BlueprintCallable, Category = "GameplayEffect")
 	float GetActiveEffectDuration(FActiveGameplayEffectHandle EffectHandle);
-
-	UPROPERTY(BlueprintAssignable, Category = "Events")
-	FOnPlayerIsDeath OnPlayerDeath;
 
 	/** Returns CameraBoom subobject 
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }

@@ -4,7 +4,7 @@
 #include "AS_VitalAttributeSet.h"
 #include "TPProject/TPProjectCharacter.h"
 
-
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(STATUS_DEAD);
 
 void UAS_VitalAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
@@ -19,6 +19,7 @@ void UAS_VitalAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribu
 	{
 		NewValue = FMath::Clamp(NewValue, 0.0f, MaxArmor.GetCurrentValue());
 	}
+	
 	
 }
 
@@ -36,9 +37,9 @@ void UAS_VitalAttributeSet::PostAttributeChange(const FGameplayAttribute& Attrib
 		{
 			if(TargetASC)
 			{
-				TargetASC->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName("Status.Dead")));
+				TargetASC->AddLooseGameplayTag(STATUS_DEAD);
 				OwnerCharacter->OnSetPlayerDeath(true);
 			}
-		}
+		} 
 	}
 }

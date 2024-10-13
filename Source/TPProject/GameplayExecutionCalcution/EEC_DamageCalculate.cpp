@@ -4,17 +4,21 @@
 #include "TPProject/GameplayExecutionCalcution/EEC_DamageCalculate.h"
 
 #include "AbilitySystemComponent.h"
+#include "NativeGameplayTags.h"
 #include "TPProject/GameplayerAttributes/AS_VitalAttributeSet.h"
+
+UE_DEFINE_GAMEPLAY_TAG(VALUE_DAMAGE, "Value.Damage");
+UE_DEFINE_GAMEPLAY_TAG(STATUS_INVINSIBILITY, "Status.Invinsibility");
 
 void UEEC_DamageCalculate::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
                                                   FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
 	Super::Execute_Implementation(ExecutionParams, OutExecutionOutput);
 	
-	const UAbilitySystemComponent* TargetAsc = ExecutionParams.GetTargetAbilitySystemComponent();
+	const UAbilitySystemComponent* TargetAsc = ExecutionParams.GetSourceAbilitySystemComponent();
 	    
 	// Перевіряємо, чи є у цілі тег State.Invinsible
-	if (TargetAsc->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName("Status.Invinsibility"))))
+	if (TargetAsc->HasMatchingGameplayTag(STATUS_INVINSIBILITY))
 	{
 		// Ціль невразлива — не застосовуємо пошкодження
 		return;
@@ -34,12 +38,18 @@ void UEEC_DamageCalculate::Execute_Implementation(const FGameplayEffectCustomExe
 	float HealthValue = TargetAsc->GetNumericAttribute(UAS_VitalAttributeSet::GetHealthAttribute());
 
 	//Початкове пошкодження з ефекту
-	float Damage = Spec.GetSetByCallerMagnitude(FGameplayTag::RequestGameplayTag(FName("Effect.Damage")), true, 5);
+	float Damage = Spec.GetSetByCallerMagnitude(VALUE_DAMAGE, true, 5);
 	
 	//Розрахунок віднімання броні
-	float DamageToArmor = FMath::Min(Damage, ArmorValue);
-	ArmorValue -= DamageToArmor;
-	Damage -= DamageToArmor;
+	if(ArmorValue > 0.f)
+	{
+		float DamageToArmor = FMath::Min(Damage, ArmorValue);
+		ArmorValue -= DamageToArmor;
+		Damage -= DamageToArmor;
+		
+		//Оновлення значення броні та здоров'я
+		OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UAS_VitalAttributeSet::GetArmorAttribute(), EGameplayModOp::Override, ArmorValue));
+	}
 
 	//Залишок пошкодження для віднімання здоров'я
 	if(Damage > 0.f)
@@ -47,7 +57,4 @@ void UEEC_DamageCalculate::Execute_Implementation(const FGameplayEffectCustomExe
 		HealthValue -= Damage;
 		OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UAS_VitalAttributeSet::GetHealthAttribute(), EGameplayModOp::Override, HealthValue));
 	}
-	
-	//Оновлення значення броні та здоров'я
-	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UAS_VitalAttributeSet::GetArmorAttribute(), EGameplayModOp::Override, ArmorValue));
 }

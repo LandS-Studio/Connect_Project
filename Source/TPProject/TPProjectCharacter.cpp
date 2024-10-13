@@ -13,6 +13,8 @@
 #include "TPPlayerState.h"
 #include "Kismet/KismetMathLibrary.h"
 
+UE_DEFINE_GAMEPLAY_TAG(STATUS_DEAD, "Status.Dead");
+
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 //////////////////////////////////////////////////////////////////////////
@@ -41,10 +43,11 @@ ATPProjectCharacter::ATPProjectCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
+	/*
 	PlayerCursor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerCursor"));
 	PlayerCursor->SetupAttachment(RootComponent);
 	PlayerCursor->SetRelativeLocation(FVector(0.0f, 0.0f, -85.0f));
-
+	*/
 	PlayerInfo = CreateDefaultSubobject<UWidgetComponent>(TEXT("PlayerInfo"));
 	PlayerInfo->SetupAttachment(RootComponent);
 
@@ -94,7 +97,7 @@ bool ATPProjectCharacter::GetIsAlive()
 
 		GetAbilitySystemComponent()->GetOwnedGameplayTags(OwnedTags);
 
-		if(OwnedTags.HasTag(FGameplayTag::RequestGameplayTag(FName("Status.Dead"))))
+		if(OwnedTags.HasTag(STATUS_DEAD))
 		{
 			return false;
 		}

@@ -6,6 +6,10 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "TPProject/TPProjectCharacter.h"
 
+
+UE_DEFINE_GAMEPLAY_TAG(SPEED_DOWN, "Status.SpeedDown");
+UE_DEFINE_GAMEPLAY_TAG(SPEED_UP, "Status.SpeedUp");
+
 void UAS_MovementAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
 	//Super::PostAttributeChange(Attribute, OldValue, NewValue);
@@ -21,22 +25,22 @@ void UAS_MovementAttributeSet::PostAttributeChange(const FGameplayAttribute& Att
 					MovementComponent->MaxWalkSpeed = NewValue;
 					if(NewValue > DefaultSpeed.GetCurrentValue())
 					{
-						TargetASC->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName("Status.SpeedDown")));
-						OwnerActor->OnStatusChanged(false, FGameplayTag::RequestGameplayTag(FName("Status.SpeedDown")));
-						TargetASC->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName("Status.SpeedUp")));
-						OwnerActor->OnStatusChanged(true, FGameplayTag::RequestGameplayTag(FName("Status.SpeedUp")));
+						TargetASC->RemoveLooseGameplayTag(SPEED_DOWN);
+						OwnerActor->OnStatusChanged(false, SPEED_DOWN);
+						TargetASC->AddLooseGameplayTag(SPEED_UP);
+						OwnerActor->OnStatusChanged(true, SPEED_UP);
 					} else if (NewValue < DefaultSpeed.GetCurrentValue())
 					{
-						TargetASC->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName("Status.SpeedUp")));
-						OwnerActor->OnStatusChanged(false, FGameplayTag::RequestGameplayTag(FName("Status.SpeedUp")));
-						TargetASC->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName("Status.SpeedDown")));
-						OwnerActor->OnStatusChanged(true, FGameplayTag::RequestGameplayTag(FName("Status.SpeedDown")));
+						TargetASC->RemoveLooseGameplayTag(SPEED_UP);
+						OwnerActor->OnStatusChanged(false, SPEED_UP);
+						TargetASC->AddLooseGameplayTag(SPEED_DOWN);
+						OwnerActor->OnStatusChanged(true, SPEED_DOWN);
 					} else if (NewValue == DefaultSpeed.GetCurrentValue())
 					{
-						TargetASC->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName("Status.SpeedDown")));
-						OwnerActor->OnStatusChanged(false, FGameplayTag::RequestGameplayTag(FName("Status.SpeedDown")));
-						TargetASC->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName("Status.SpeedUp")));
-						OwnerActor->OnStatusChanged(false, FGameplayTag::RequestGameplayTag(FName("Status.SpeedUp")));
+						TargetASC->RemoveLooseGameplayTag(SPEED_DOWN);
+						OwnerActor->OnStatusChanged(false, SPEED_DOWN);
+						TargetASC->RemoveLooseGameplayTag(SPEED_UP);
+						OwnerActor->OnStatusChanged(false, SPEED_UP);
 					}					
 				}
 			}

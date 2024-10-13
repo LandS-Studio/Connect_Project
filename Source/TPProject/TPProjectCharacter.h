@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
-
+#include "NativeGameplayTags.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
@@ -10,6 +10,9 @@
 #include "Components/WidgetComponent.h"
 #include "Logging/LogMacros.h"
 #include "TPProjectCharacter.generated.h"
+
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(STATUS_DEAD);
 
 class USpringArmComponent;
 //class UCameraComponent;
@@ -34,7 +37,6 @@ class ATPProjectCharacter : public ACharacter, public IAbilitySystemInterface
 	UCameraComponent* FollowCamera;
 	*/
 	
-	
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
@@ -54,6 +56,9 @@ class ATPProjectCharacter : public ACharacter, public IAbilitySystemInterface
 
 public:
 	ATPProjectCharacter();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings")
+	TMap<FGameplayTag, float> DefaultSettings;
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	void RotateCharacterToPoint(const FVector& HitLocation);
@@ -81,9 +86,10 @@ public:
 	virtual void UnPossessed() override;
 
 protected:
+	/*
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UStaticMeshComponent* PlayerCursor;
-
+	*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UWidgetComponent* PlayerInfo;
 	

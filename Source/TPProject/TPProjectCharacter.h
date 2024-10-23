@@ -86,10 +86,15 @@ public:
 	virtual void UnPossessed() override;
 
 protected:
-	/*
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	UStaticMeshComponent* PlayerCursor;
-	*/
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
+	UArrowComponent* ArrowDropLocation;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	UStaticMeshComponent* Cursor;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	UStaticMeshComponent* PreviewPlacing;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UWidgetComponent* PlayerInfo;
 	

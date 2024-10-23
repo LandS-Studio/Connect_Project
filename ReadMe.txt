@@ -1,3 +1,50 @@
+Update 0.0.29
+    ЗАВДАННЯ:
+    Third Person (platformer)
+    1.Додайте анімацію до абілки GA_PowerJump
+      - До GA_PowerJump додано PlayMontageAndWait з монтажем AM_ActivatePowerJump
+    2.Нехай по івенту з монтажу накладається імпульс ворогам
+      - AM_ActivatePowerJump має AnimNotify (ActivatePowerJump) який викликає івент для накладання імпульсу ворогам (манекенам)
+    3.А в кінці анімації – накладається шкода
+      - По завершенню анімації всім ворогам (манекенам) які отримали імпульс накладається шкода.
+
+Update 0.0.25a
+
+BUGFIX
+    BUG: BP_BaseDamageZone збирала всіх персонажів в ній, але пошкодження наносилось тільки останньому, навіть якщо він з неї вийшов.
+    FIX: BP_BaseDamageZone збирає всіх персонажів в ній та наносить пошкодження всім в масиві.
+
+OTHER:
+    MSBuildEnableWorkloadResolver = false
+    
+Collision:
+    - Додано ObjectChannels (InteractActor та InteractSphere)
+    - Додано для InteractSphere власний CollisionPreset, який шукає актори з каналом InteractActor
+    
+PlayerCharacter:
+    - Додано SphereCollision (InteractSphere) яка шукає найближчі актори з каналом InteractActor
+    - Додано таймер ClosestHoverCheck(), який розраховує дистанцію до персонажа та назначає найближчий HoverActor
+    - Додано IA_SelectRangeWeapon, IA_SelectMeleeWeapon, IA_SelectThrowWeapon для вибору зброї яку ми підібрали.
+    
+Input:
+    - Додано InputAction (IA_Interact "F"), для взаємодії з об'єктами на мапі
+    - Додано InputAction (IA_LMBAction "Left Mouse Button"), для ударів кулаками, стрільби та встановлення предметів (міни і т.д.)
+    - Додано InputAction (IA_LMBAction "Right Mouse Button"), для додаткових функцій (наразі відміняє встановлення міни та виходить з режиму встановлення)
+    
+Actors:
+    - Додано базовий клас BP_BaseItemInteract, та дочірні актори які можна буде підібрати у відповідний слот на IA_Interact
+    - Додано базовий клас BP_BaseWeaponItem, та дочірні актори які можна буде підібрати у відповідний слот на IA_Interact
+    - Додано базовий клас PDA_BasicItem, та дочірні Primary Data Assets для всіх предметів з базовими параметрами
+    - Додано від дочірніх об'єктів PDA_BasicItem, дочірні Data Assets для всіх предметів з яких ми отримуватимемо базові параметри (назва, іконка, тег, дамаг і т.д.)
+    - Додано базовий клас BP_BasicProjectile, та дочірні актор кулі яка спавниться під час використання вогнепальної зброї
+    - BP_BasicProjectile наносить пошкодження акторам які мають GAS та атрибути здоров'я
+    - Зброя має атрибути патронів, які віднімаються під час стрільби відповідним ефектом GE_DecreaseAmmo
+
+Animations:
+    - Додано перелік базових анімація для ножа, штурмової гвинтівки, пістолета, предметів які можна буде кинути
+    - Додано анімації до AnimBlueprint які змінюються відповідно до E_MovementState
+
+
 Update 0.0.25
 
 ADD:

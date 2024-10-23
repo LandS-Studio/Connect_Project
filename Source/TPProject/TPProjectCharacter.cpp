@@ -11,6 +11,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "TPPlayerState.h"
+#include "Components/ArrowComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 UE_DEFINE_GAMEPLAY_TAG(STATUS_DEAD, "Status.Dead");
@@ -43,13 +44,19 @@ ATPProjectCharacter::ATPProjectCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
-	/*
-	PlayerCursor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerCursor"));
-	PlayerCursor->SetupAttachment(RootComponent);
-	PlayerCursor->SetRelativeLocation(FVector(0.0f, 0.0f, -85.0f));
-	*/
+	
+	Cursor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerCursor"));
+	Cursor->SetupAttachment(RootComponent);
+	Cursor->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
+
+	PreviewPlacing = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PreviewPlacing"));
+	PreviewPlacing->SetupAttachment(RootComponent);
+	
 	PlayerInfo = CreateDefaultSubobject<UWidgetComponent>(TEXT("PlayerInfo"));
 	PlayerInfo->SetupAttachment(RootComponent);
+
+	ArrowDropLocation = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowDropLocation"));
+	ArrowDropLocation->SetupAttachment(RootComponent);
 
 	/*
 	// Create a camera boom (pulls in towards the player if there is a collision)
@@ -77,13 +84,11 @@ void ATPProjectCharacter::BeginPlay()
 
 void ATPProjectCharacter::RotateCharacterToPoint(const FVector& HitLocation)
 {
-	if(APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	if(Controller != nullptr)
 	{
-		FVector CharacterLocation = GetActorLocation();
-		FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(CharacterLocation, HitLocation);
-		FRotator CurrentRotation = GetActorRotation();
-
-		FRotator NewRotation = FMath::RInterpTo(CurrentRotation,LookAtRotation,GetWorld()->GetTimeSeconds(),10.f);
+		const FRotator NewRotation = FMath::RInterpTo(	GetActorRotation(),
+														UKismetMathLibrary::FindLookAtRotation(GetActorLocation(),
+														HitLocation),GetWorld()->GetTimeSeconds(),10.f);
 		
 		SetActorRotation(FRotator(0.0f, NewRotation.Yaw , 0.0f));
 	}
@@ -211,16 +216,13 @@ void ATPProjectCharacter::Move(const FInputActionValue& Value)
 
 
 void ATPProjectCharacter::Look(const FInputActionValue& Value)
-{
-	APlayerController* PlayerController = Cast<APlayerController>(GetController());
-	FHitResult HitResult;
-	
-	if (PlayerController != nullptr)
+{	
+	if (Controller != nullptr)
 	{
-		if(PlayerController->GetHitResultUnderCursor(ECC_Visibility, true, HitResult))
+		if(Cursor)
 		{
-			FVector HitLocation = HitResult.Location;
-			HitLocation.Z += 10;
+			FVector HitLocation = Cursor->GetComponentLocation();
+			HitLocation.Z += 2;
 			RotateCharacterToPoint(HitLocation);
 		}
 	}

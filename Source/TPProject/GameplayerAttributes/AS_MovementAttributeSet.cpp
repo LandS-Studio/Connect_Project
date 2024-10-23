@@ -12,7 +12,7 @@ UE_DEFINE_GAMEPLAY_TAG(SPEED_UP, "Status.SpeedUp");
 
 void UAS_MovementAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
-	//Super::PostAttributeChange(Attribute, OldValue, NewValue);
+	Super::PostAttributeChange(Attribute, OldValue, NewValue);
 
 	if(Attribute == GetCurrentSpeedAttribute())
 	{
@@ -35,7 +35,7 @@ void UAS_MovementAttributeSet::PostAttributeChange(const FGameplayAttribute& Att
 						OwnerActor->OnStatusChanged(false, SPEED_UP);
 						TargetASC->AddLooseGameplayTag(SPEED_DOWN);
 						OwnerActor->OnStatusChanged(true, SPEED_DOWN);
-					} else if (NewValue == DefaultSpeed.GetCurrentValue())
+					} else 
 					{
 						TargetASC->RemoveLooseGameplayTag(SPEED_DOWN);
 						OwnerActor->OnStatusChanged(false, SPEED_DOWN);

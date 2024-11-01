@@ -41,7 +41,7 @@ class ATPProjectCharacter : public ACharacter, public IAbilitySystemInterface
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
 
-	/** Jump Input Action */
+	/** JumpInput Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* JumpAction;
 
@@ -85,10 +85,7 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void UnPossessed() override;
 
-protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
-	UArrowComponent* ArrowDropLocation;
-	
+protected:	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	UStaticMeshComponent* Cursor;
 

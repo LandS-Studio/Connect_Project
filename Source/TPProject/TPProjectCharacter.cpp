@@ -55,9 +55,6 @@ ATPProjectCharacter::ATPProjectCharacter()
 	PlayerInfo = CreateDefaultSubobject<UWidgetComponent>(TEXT("PlayerInfo"));
 	PlayerInfo->SetupAttachment(RootComponent);
 
-	ArrowDropLocation = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowDropLocation"));
-	ArrowDropLocation->SetupAttachment(RootComponent);
-
 	/*
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));

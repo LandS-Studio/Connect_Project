@@ -18,4 +18,8 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	FGameplayAttributeData PowerDamage;
 	ATTRIBUTE_ACCESSORS(UAS_DamageAttributeSet, PowerDamage);
+	
+	UPROPERTY(BlueprintReadOnly)
+	FGameplayAttributeData PunchDamage;
+	ATTRIBUTE_ACCESSORS(UAS_DamageAttributeSet, PunchDamage);
 };

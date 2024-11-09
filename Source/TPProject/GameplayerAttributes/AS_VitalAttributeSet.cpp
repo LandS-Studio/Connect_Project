@@ -32,14 +32,15 @@ void UAS_VitalAttributeSet::PostAttributeChange(const FGameplayAttribute& Attrib
 	if(Attribute == GetHealthAttribute())
 	{
 		ATPProjectCharacter* OwnerCharacter = Cast<ATPProjectCharacter>(TargetASC->GetAvatarActor());
-		
-		if(OwnerCharacter && NewValue <= 0.0f)
+
+		if(TargetASC && NewValue <= 0.0f)
 		{
-			if(TargetASC)
+			TargetASC->AddLooseGameplayTag(STATUS_DEAD);
+			if(OwnerCharacter)
 			{
-				TargetASC->AddLooseGameplayTag(STATUS_DEAD);
 				OwnerCharacter->OnSetPlayerDeath(true);
-			}
-		} 
+			} 
+		}
+		
 	}
 }

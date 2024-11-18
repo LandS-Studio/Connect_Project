@@ -40,11 +40,13 @@ class ATPProjectCharacter : public ACharacter, public IAbilitySystemInterface
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
-
+	
 	/** JumpInput Action */
+	/*
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* JumpAction;
-
+	*/
+		
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
@@ -59,6 +61,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings")
 	TMap<FGameplayTag, float> DefaultSettings;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
+	float MoveX;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
+	float MoveY;
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	void RotateCharacterToPoint(const FVector& HitLocation);

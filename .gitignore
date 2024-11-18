@@ -75,3 +75,4 @@ DerivedDataCache/*
 
 # Cache files for the editor to use
 Content/Ignore/*
+Content/StarterContent/*
